@@ -102,6 +102,36 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip
 
+// Define specific types for chart data
+type ChartDataPoint = {
+  value?: number | string
+  name?: string
+  dataKey?: string
+  color?: string
+  type?: string
+  payload?: Record<string, unknown>
+  fill?: string
+}
+
+type ChartLabel = string | number | Date
+
+// Define proper types for tooltip content props
+type TooltipContentProps = {
+  active?: boolean
+  payload?: ChartDataPoint[]
+  label?: ChartLabel
+  labelFormatter?: (value: ChartLabel, payload: ChartDataPoint[]) => React.ReactNode
+  formatter?: (value: number | string, name: string, props: ChartDataPoint, index: number, payload: Record<string, unknown>) => React.ReactNode
+  color?: string
+  className?: string
+  hideLabel?: boolean
+  hideIndicator?: boolean
+  indicator?: "line" | "dot" | "dashed"
+  nameKey?: string
+  labelKey?: string
+  labelClassName?: string
+}
+
 function ChartTooltipContent({
   active,
   payload,
@@ -116,14 +146,7 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
-}: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
-  React.ComponentProps<"div"> & {
-    hideLabel?: boolean
-    hideIndicator?: boolean
-    indicator?: "line" | "dot" | "dashed"
-    nameKey?: string
-    labelKey?: string
-  }) {
+}: TooltipContentProps) {
   const { config } = useChart()
 
   const tooltipLabel = React.useMemo(() => {
@@ -142,7 +165,7 @@ function ChartTooltipContent({
     if (labelFormatter) {
       return (
         <div className={cn("font-medium", labelClassName)}>
-          {labelFormatter(value, payload)}
+          {labelFormatter(value as ChartLabel, payload)}
         </div>
       )
     }
@@ -178,11 +201,11 @@ function ChartTooltipContent({
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
         {payload
-          .filter((item: any) => item.type !== "none")
-          .map((item: any, index: number) => {
+          .filter((item: ChartDataPoint) => item.type !== "none")
+          .map((item: ChartDataPoint, index: number) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`
             const itemConfig = getPayloadConfigFromPayload(config, item, key)
-            const indicatorColor = color || item.payload.fill || item.color
+            const indicatorColor = color || item.payload?.fill || item.color
 
             return (
               <div
@@ -193,7 +216,7 @@ function ChartTooltipContent({
                 )}
               >
                 {formatter && item?.value !== undefined && item.name ? (
-                  formatter(item.value, item.name, item, index, item.payload)
+                  formatter(item.value, item.name, item, index, item.payload || {})
                 ) : (
                   <>
                     {itemConfig?.icon ? (
@@ -234,7 +257,7 @@ function ChartTooltipContent({
                       </div>
                       {item.value && (
                         <span className="text-foreground font-mono font-medium tabular-nums">
-                          {item.value.toLocaleString()}
+                          {typeof item.value === 'number' ? item.value.toLocaleString() : item.value}
                         </span>
                       )}
                     </div>
@@ -250,17 +273,22 @@ function ChartTooltipContent({
 
 const ChartLegend = RechartsPrimitive.Legend
 
+// Define proper types for legend content props
+type LegendContentProps = {
+  payload?: ChartDataPoint[]
+  verticalAlign?: "top" | "bottom"
+  className?: string
+  hideIcon?: boolean
+  nameKey?: string
+}
+
 function ChartLegendContent({
   className,
   hideIcon = false,
   payload,
   verticalAlign = "bottom",
   nameKey,
-}: React.ComponentProps<"div"> &
-  Pick<RechartsPrimitive.LegendProps, "verticalAlign"> & {
-    hideIcon?: boolean
-    nameKey?: string
-  }) {
+}: LegendContentProps) {
   const { config } = useChart()
 
   if (!payload?.length) {
@@ -276,8 +304,8 @@ function ChartLegendContent({
       )}
     >
       {payload
-        .filter((item: any) => item.type !== "none")
-        .map((item: any) => {
+        .filter((item: ChartDataPoint) => item.type !== "none")
+        .map((item: ChartDataPoint) => {
           const key = `${nameKey || item.dataKey || "value"}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
