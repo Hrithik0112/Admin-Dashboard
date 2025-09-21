@@ -1,12 +1,10 @@
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Bug, User, Wifi, type LucideIcon } from "lucide-react"
+import { Bug, User, Wifi, type LucideIcon } from "lucide-react"
 import { type ReactNode } from "react"
 import { generateAvatarUrl } from "@/lib/utils"
 
 interface RightSidebarProps {
   isCollapsed: boolean
-  onToggle: () => void
   children: ReactNode
 }
 
@@ -37,9 +35,8 @@ interface ContactItemProps {
   isCollapsed: boolean
 }
 
-
 // Main RightSidebar component
-export function RightSidebar({ isCollapsed, onToggle, children }: RightSidebarProps) {
+export function RightSidebar({ isCollapsed, children }: RightSidebarProps) {
   return (
     <div
       className={cn(
@@ -48,28 +45,16 @@ export function RightSidebar({ isCollapsed, onToggle, children }: RightSidebarPr
       )}
     >
       {/* Header */}
-      <div className="flex h-16 items-center justify-between border-b px-4">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={onToggle}
-          className="h-8 w-8"
-        >
-          {isCollapsed ? (
-            <ChevronLeft className="h-4 w-4" />
-          ) : (
-            <ChevronRight className="h-4 w-4" />
-          )}
-        </Button>
+      {/* <div className="flex h-16 items-center justify-center border-b px-4">
         {!isCollapsed && (
           <h1 className="text-lg font-semibold text-foreground">
             Quick Panel
           </h1>
         )}
-      </div>
+      </div> */}
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-5">
         {children}
       </div>
     </div>
@@ -81,7 +66,7 @@ export function Section({ title, children, isCollapsed }: SectionProps) {
   return (
     <div className="mb-6">
       {!isCollapsed && (
-        <h3 className="text-sm font-medium text-foreground mb-3">
+        <h3 className="text-sm font-semibold text-foreground mb-3">
           {title}
         </h3>
       )}

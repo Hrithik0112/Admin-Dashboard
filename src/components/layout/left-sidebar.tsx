@@ -1,13 +1,12 @@
 import { cn } from "@/lib/utils"
 import { leftNavigation } from "./data/navigation"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { useState, type ReactNode } from "react"
 import { generateAvatarUrl } from "@/lib/utils"
 
 interface LeftSidebarProps {
   isCollapsed: boolean
-  onToggle: () => void
+  onToggle?: () => void
   children: ReactNode
 }
 
@@ -31,7 +30,7 @@ interface NavItemProps {
 }
 
 // Main LeftSidebar component
-export function LeftSidebar({ isCollapsed, onToggle, children }: LeftSidebarProps) {
+export function LeftSidebar({ isCollapsed, children }: LeftSidebarProps) {
   return (
     <div
       className={cn(
@@ -41,7 +40,7 @@ export function LeftSidebar({ isCollapsed, onToggle, children }: LeftSidebarProp
     >
       {/* Header */}
       <div className="flex h-16 items-center justify-between border-b px-4">
-        {!isCollapsed && (
+        {!isCollapsed ? (
           <div className="flex items-center space-x-3">
             <img 
               src={generateAvatarUrl("byewind")} 
@@ -52,8 +51,16 @@ export function LeftSidebar({ isCollapsed, onToggle, children }: LeftSidebarProp
               ByeWind
             </h1>
           </div>
+        ) : (
+          <div className="flex items-center space-x-3">
+            <img 
+              src={generateAvatarUrl("byewind")} 
+              alt="ByeWind" 
+              className="w-8 h-8 rounded-full object-cover"
+            />
+          </div>
         )}
-        <Button
+        {/* <Button
           variant="outline"
           size="icon"
           onClick={onToggle}
@@ -64,7 +71,7 @@ export function LeftSidebar({ isCollapsed, onToggle, children }: LeftSidebarProp
           ) : (
             <ChevronLeft className="h-4 w-4" />
           )}
-        </Button>
+        </Button> */}
       </div>
 
       {/* Content */}
@@ -151,7 +158,7 @@ export function NavItem({
           expanded ? (
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
           ) : (
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
           )
         )}
       </button>

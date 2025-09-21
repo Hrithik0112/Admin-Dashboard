@@ -25,7 +25,10 @@ export function DualSidebarLayout({ children }: DualSidebarLayoutProps) {
 
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col min-w-0">
-        <Header />
+        <Header 
+          onLeftSidebarToggle={() => setLeftCollapsed(!leftCollapsed)}
+          onRightSidebarToggle={() => setRightCollapsed(!rightCollapsed)}
+        />
         <main className="flex-1 overflow-auto p-6">
           <div className="mx-auto max-w-7xl">
             {children}
@@ -34,14 +37,18 @@ export function DualSidebarLayout({ children }: DualSidebarLayoutProps) {
       </div>
 
       {/* Right Sidebar */}
+      {
+        !rightCollapsed && (
+      
       <RightSidebar
         isCollapsed={rightCollapsed}
-        onToggle={() => setRightCollapsed(!rightCollapsed)}
       >
         <Notifications isCollapsed={rightCollapsed} />
         <Activities isCollapsed={rightCollapsed} />
         <Contacts isCollapsed={rightCollapsed} />
       </RightSidebar>
+      )
+      }
     </div>
   )
 }
