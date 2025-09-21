@@ -7,7 +7,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { DataTable, type Column, type FilterOption } from "@/components/ui/data-table"
+import { DataTable, type Column, type FilterOption } from "@/components/order-list/data-table"
 import { MoreHorizontal, Eye, Edit, Trash2, Calendar, MapPin } from "lucide-react"
 import { orders, type Order } from "@/lib/data"
 import { getStatusDot, getStatusColor } from "@/lib/utils"
@@ -196,7 +196,7 @@ export function OrderList() {
   )
 
   return (
-    <div className="">
+    <div>
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-lg sm:text-xl font-bold tracking-tight">Order List</h1>
