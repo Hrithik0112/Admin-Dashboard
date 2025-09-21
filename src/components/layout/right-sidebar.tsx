@@ -1,18 +1,52 @@
 import { cn } from "@/lib/utils"
-import { rightNavigation } from "./data/navigation"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, Bug, User, Wifi, type LucideIcon } from "lucide-react"
+import { type ReactNode } from "react"
 
 interface RightSidebarProps {
   isCollapsed: boolean
   onToggle: () => void
+  children: ReactNode
 }
 
-export function RightSidebar({ isCollapsed, onToggle }: RightSidebarProps) {
+interface SectionProps {
+  title: string
+  children: ReactNode
+  isCollapsed: boolean
+}
+
+interface NotificationItemProps {
+  icon: LucideIcon
+  text: string
+  timestamp: string
+  isCollapsed: boolean
+}
+
+interface ActivityItemProps {
+  avatar: string
+  text: string
+  timestamp: string
+  isCollapsed: boolean
+  isLast?: boolean
+}
+
+interface ContactItemProps {
+  avatar: string
+  name: string
+  isCollapsed: boolean
+}
+
+// Helper function to generate random avatar URLs
+const generateAvatarUrl = (seed: string, size: number = 40) => {
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&size=${size}`
+}
+
+// Main RightSidebar component
+export function RightSidebar({ isCollapsed, onToggle, children }: RightSidebarProps) {
   return (
     <div
       className={cn(
-        "flex h-full flex-col border-l bg-sidebar transition-all duration-300",
+        "flex h-full flex-col border-l bg-white transition-all duration-300",
         isCollapsed ? "w-16" : "w-80"
       )}
     >
@@ -31,60 +65,210 @@ export function RightSidebar({ isCollapsed, onToggle }: RightSidebarProps) {
           )}
         </Button>
         {!isCollapsed && (
-          <h1 className="text-lg font-semibold text-sidebar-foreground">
+          <h1 className="text-lg font-semibold text-gray-900">
             Quick Panel
           </h1>
         )}
       </div>
 
       {/* Content */}
-      <div className="flex-1 space-y-6 p-4">
-        {rightNavigation.map((section, sectionIndex) => (
-          <div key={sectionIndex} className="space-y-3">
-            {!isCollapsed && (
-              <h3 className="text-sm font-medium text-sidebar-foreground">
-                {section.title}
-              </h3>
-            )}
-            <div className="space-y-2">
-              {section.items.map((item, itemIndex) => (
-                <div
-                  key={itemIndex}
-                  className={cn(
-                    "flex items-center space-x-3 rounded-lg p-3 transition-colors hover:bg-sidebar-accent",
-                    isCollapsed && "justify-center p-2"
-                  )}
-                >
-                  <item.icon className="h-4 w-4 text-sidebar-foreground/60" />
-                  {!isCollapsed && (
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-sidebar-foreground">
-                        {item.title}
-                      </p>
-                      {('subtitle' in item) && (
-                        <p className="text-xs text-sidebar-foreground/60">
-                          {item.subtitle as string}
-                        </p>
-                      )}
-                      {('value' in item) && (
-                        <div className="flex items-center justify-between mt-1">
-                          <span className="text-sm font-semibold text-sidebar-foreground">
-                            {item.value as string}
-                          </span>
-                          {('trend' in item) && (
-                            <span className="text-xs text-green-600">
-                              {item.trend as string}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+      <div className="flex-1 overflow-y-auto p-4">
+        {children}
+      </div>
+    </div>
+  )
+}
+
+// Section component
+export function Section({ title, children, isCollapsed }: SectionProps) {
+  return (
+    <div className="mb-6">
+      {!isCollapsed && (
+        <h3 className="text-sm font-medium text-gray-900 mb-3">
+          {title}
+        </h3>
+      )}
+      <div className="space-y-3">
+        {children}
+      </div>
+    </div>
+  )
+}
+
+// Notifications section
+export function Notifications({ isCollapsed }: { isCollapsed: boolean }) {
+  const notifications = [
+    { icon: Bug, text: "You have a bug that needs...", timestamp: "Just now" },
+    { icon: User, text: "New user registered.", timestamp: "59 minutes ago" },
+    { icon: Bug, text: "You have a bug that needs...", timestamp: "12 hours ago" },
+    { icon: Wifi, text: "Andi Lane subscribed to you.", timestamp: "Today, 11:59 AM" },
+  ]
+
+  return (
+    <Section title="Notifications" isCollapsed={isCollapsed}>
+      {notifications.map((notification, index) => (
+        <NotificationItem
+          key={index}
+          icon={notification.icon}
+          text={notification.text}
+          timestamp={notification.timestamp}
+          isCollapsed={isCollapsed}
+        />
+      ))}
+    </Section>
+  )
+}
+
+// Notification item component
+export function NotificationItem({ icon: Icon, text, timestamp, isCollapsed }: NotificationItemProps) {
+  if (isCollapsed) {
+    return (
+      <div className="flex justify-center p-2">
+        <Icon className="h-4 w-4 text-blue-500" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+      <Icon className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+      <div className="flex-1 min-w-0">
+        <p className="text-sm text-gray-900">{text}</p>
+        <p className="text-xs text-gray-500 mt-1">{timestamp}</p>
+      </div>
+    </div>
+  )
+}
+
+// Activities section
+export function Activities({ isCollapsed }: { isCollapsed: boolean }) {
+  const activities = [
+    { 
+      avatar: generateAvatarUrl("developer1"), 
+      text: "You have a bug that needs...", 
+      timestamp: "Just now" 
+    },
+    { 
+      avatar: generateAvatarUrl("developer2"), 
+      text: "Released a new version.", 
+      timestamp: "59 minutes ago" 
+    },
+    { 
+      avatar: generateAvatarUrl("developer3"), 
+      text: "Submitted a bug.", 
+      timestamp: "12 hours ago" 
+    },
+    { 
+      avatar: generateAvatarUrl("developer4"), 
+      text: "Modified A data in Page X.", 
+      timestamp: "Today, 11:59 AM" 
+    },
+    { 
+      avatar: generateAvatarUrl("developer5"), 
+      text: "Deleted a page in Project X.", 
+      timestamp: "Feb 2, 2023" 
+    },
+  ]
+
+  return (
+    <Section title="Activities" isCollapsed={isCollapsed}>
+      {activities.map((activity, index) => (
+        <ActivityItem
+          key={index}
+          avatar={activity.avatar}
+          text={activity.text}
+          timestamp={activity.timestamp}
+          isCollapsed={isCollapsed}
+          isLast={index === activities.length - 1}
+        />
+      ))}
+    </Section>
+  )
+}
+
+// Activity item component
+export function ActivityItem({ avatar, text, timestamp, isCollapsed, isLast }: ActivityItemProps) {
+  if (isCollapsed) {
+    return (
+      <div className="flex justify-center p-2">
+        <img 
+          src={avatar} 
+          alt="Activity avatar" 
+          className="w-6 h-6 rounded-full object-cover"
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+      {/* Timeline line */}
+      {!isLast && (
+        <div className="absolute left-6 top-12 w-px h-8 bg-gray-200"></div>
+      )}
+      
+      <img 
+        src={avatar} 
+        alt="Activity avatar" 
+        className="w-8 h-8 rounded-full object-cover flex-shrink-0 relative z-10"
+      />
+      
+      <div className="flex-1 min-w-0">
+        <p className="text-sm text-gray-900">{text}</p>
+        <p className="text-xs text-gray-500 mt-1">{timestamp}</p>
+      </div>
+    </div>
+  )
+}
+
+// Contacts section
+export function Contacts({ isCollapsed }: { isCollapsed: boolean }) {
+  const contacts = [
+    { avatar: generateAvatarUrl("natali"), name: "Natali Craig" },
+    { avatar: generateAvatarUrl("drew"), name: "Drew Cano" },
+    { avatar: generateAvatarUrl("orlando"), name: "Orlando Diggs" },
+    { avatar: generateAvatarUrl("andi"), name: "Andi Lane" },
+    { avatar: generateAvatarUrl("kate"), name: "Kate Morrison" },
+    { avatar: generateAvatarUrl("koray"), name: "Koray Okumus" },
+  ]
+
+  return (
+    <Section title="Contacts" isCollapsed={isCollapsed}>
+      {contacts.map((contact, index) => (
+        <ContactItem
+          key={index}
+          avatar={contact.avatar}
+          name={contact.name}
+          isCollapsed={isCollapsed}
+        />
+      ))}
+    </Section>
+  )
+}
+
+// Contact item component
+export function ContactItem({ avatar, name, isCollapsed }: ContactItemProps) {
+  if (isCollapsed) {
+    return (
+      <div className="flex justify-center p-2">
+        <img 
+          src={avatar} 
+          alt={`${name} avatar`} 
+          className="w-6 h-6 rounded-full object-cover"
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+      <img 
+        src={avatar} 
+        alt={`${name} avatar`} 
+        className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+      />
+      <div className="flex-1 min-w-0">
+        <p className="text-sm text-gray-900">{name}</p>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { LeftSidebar } from "./left-sidebar"
-import { RightSidebar } from "./right-sidebar"
+import { RightSidebar, Notifications, Activities, Contacts } from "./right-sidebar"
 import { Header } from "./header"
 
 interface DualSidebarLayoutProps {
@@ -33,7 +33,11 @@ export function DualSidebarLayout({ children }: DualSidebarLayoutProps) {
       <RightSidebar
         isCollapsed={rightCollapsed}
         onToggle={() => setRightCollapsed(!rightCollapsed)}
-      />
+      >
+        <Notifications isCollapsed={rightCollapsed} />
+        <Activities isCollapsed={rightCollapsed} />
+        <Contacts isCollapsed={rightCollapsed} />
+      </RightSidebar>
     </div>
   )
 }
