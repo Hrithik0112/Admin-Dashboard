@@ -60,18 +60,6 @@ export function LeftSidebar({ isCollapsed, children }: LeftSidebarProps) {
             />
           </div>
         )}
-        {/* <Button
-          variant="outline"
-          size="icon"
-          onClick={onToggle}
-          className="h-8 w-8"
-        >
-          {isCollapsed ? (
-            <ChevronRight className="h-4 w-4" />
-          ) : (
-            <ChevronLeft className="h-4 w-4" />
-          )}
-        </Button> */}
       </div>
 
       {/* Content */}
@@ -81,7 +69,6 @@ export function LeftSidebar({ isCollapsed, children }: LeftSidebarProps) {
     </div>
   )
 }
-
 
 export function Section({ title, children, isCollapsed, showTab, tabText }: SectionProps) {
   return (
@@ -102,7 +89,6 @@ export function Section({ title, children, isCollapsed, showTab, tabText }: Sect
     </div>
   )
 }
-
 
 export function NavItem({ 
   title, 
@@ -179,7 +165,6 @@ export function NavItem({
   )
 }
 
-
 export function Favorites({ isCollapsed }: { isCollapsed: boolean }) {
   const favorites = [
     { title: "Overview", isActive: false },
@@ -200,13 +185,43 @@ export function Favorites({ isCollapsed }: { isCollapsed: boolean }) {
   )
 }
 
-
-export function Dashboards({ isCollapsed }: { isCollapsed: boolean }) {
+export function Dashboards({ 
+  isCollapsed, 
+  onNavigation,
+  activeView 
+}: { 
+  isCollapsed: boolean
+  onNavigation?: (view: 'dashboard' | 'orderlist') => void
+  activeView?: 'dashboard' | 'orderlist'
+}) {
   const dashboards = [
-    { title: "Default", icon: leftNavigation[1].items[0].icon, isActive: true },
-    { title: "eCommerce", icon: leftNavigation[1].items[1].icon, hasSubmenu: true },
-    { title: "Projects", icon: leftNavigation[1].items[2].icon, hasSubmenu: true },
-    { title: "Online Courses", icon: leftNavigation[1].items[3].icon, hasSubmenu: true },
+    { 
+      title: "Default", 
+      icon: leftNavigation[1].items[0].icon, 
+      isActive: activeView === 'dashboard',
+      onClick: () => onNavigation?.('dashboard')
+    },
+    { 
+      title: "OrderList", 
+      icon: leftNavigation[1].items[1].icon, 
+      isActive: activeView === 'orderlist',
+      onClick: () => onNavigation?.('orderlist')
+    },
+    { 
+      title: "eCommerce", 
+      icon: leftNavigation[1].items[2].icon, 
+      hasSubmenu: true 
+    },
+    { 
+      title: "Projects", 
+      icon: leftNavigation[1].items[3].icon, 
+      hasSubmenu: true 
+    },
+    { 
+      title: "Online Courses", 
+      icon: leftNavigation[1].items[4].icon, 
+      hasSubmenu: true 
+    },
   ]
 
   return (
@@ -219,12 +234,12 @@ export function Dashboards({ isCollapsed }: { isCollapsed: boolean }) {
           isActive={item.isActive}
           hasSubmenu={item.hasSubmenu}
           isCollapsed={isCollapsed}
+          onClick={item.onClick}
         />
       ))}
     </Section>
   )
 }
-
 
 export function Pages({ isCollapsed }: { isCollapsed: boolean }) {
   const pages = leftNavigation[2].items

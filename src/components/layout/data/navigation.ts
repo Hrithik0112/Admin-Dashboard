@@ -8,6 +8,7 @@ import {
   FileText,
   MessageCircle,
   type LucideIcon,
+  List,
 } from "lucide-react"
 
 // Define types for navigation items
@@ -40,6 +41,11 @@ export const leftNavigation: NavSection[] = [
         title: "Default", 
         icon: PieChart, 
         isActive: true 
+      },
+      { 
+        title: "OrderList", 
+        icon: List, 
+        isActive: false
       },
       { 
         title: "eCommerce", 
