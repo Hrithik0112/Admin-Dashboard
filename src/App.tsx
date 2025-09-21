@@ -229,7 +229,10 @@ function App() {
   }
 
   return (
-    <DualSidebarLayout onNavigation={handleNavigation}>
+    <DualSidebarLayout 
+      onNavigation={handleNavigation}
+      activeView={activeView}
+    >
       {activeView === 'dashboard' ? <Dashboard /> : <OrderList />}
     </DualSidebarLayout>
   )

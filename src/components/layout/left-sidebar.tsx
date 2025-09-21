@@ -187,22 +187,24 @@ export function Favorites({ isCollapsed }: { isCollapsed: boolean }) {
 
 export function Dashboards({ 
   isCollapsed, 
-  onNavigation 
+  onNavigation,
+  activeView 
 }: { 
   isCollapsed: boolean
   onNavigation?: (view: 'dashboard' | 'orderlist') => void
+  activeView?: 'dashboard' | 'orderlist'
 }) {
   const dashboards = [
     { 
       title: "Default", 
       icon: leftNavigation[1].items[0].icon, 
-      isActive: true,
+      isActive: activeView === 'dashboard',
       onClick: () => onNavigation?.('dashboard')
     },
     { 
       title: "OrderList", 
       icon: leftNavigation[1].items[1].icon, 
-      isActive: false,
+      isActive: activeView === 'orderlist',
       onClick: () => onNavigation?.('orderlist')
     },
     { 
