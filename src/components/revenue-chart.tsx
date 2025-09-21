@@ -3,6 +3,7 @@
 import { CartesianGrid, Line, XAxis, YAxis, Area, ComposedChart } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { useTheme } from "@/hooks/use-Theme"
 
 
 const chartData = [
@@ -27,6 +28,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function RevenueChart() {
+    const isDarkMode = useTheme()
     return (
         <Card>
             <CardHeader className="flex flex-row items-center pb-2 gap-4">
@@ -80,14 +82,14 @@ export function RevenueChart() {
                         {/* Current Week Line (black, solid then dashed) */}
                         <Line dataKey="currentWeekSolid" 
                         type="monotone" 
-                        stroke="black" 
+                        stroke={isDarkMode ? "white" : "black"} 
                         strokeWidth={2} 
                         dot={false} />
 
                         <Line 
                         dataKey="currentWeekDashed" 
                         type="monotone" 
-                        stroke="black" 
+                        stroke={isDarkMode ? "white" : "black"} 
                         strokeWidth={2} 
                         dot={false} 
                         strokeDasharray="5 5" />

@@ -33,6 +33,7 @@ import {
   ArrowDown,
   X
 } from "lucide-react"
+import { useMobile } from "@/hooks/use-mobile"
 
 // Types
 interface Column<T> {
@@ -294,107 +295,111 @@ function DataTableToolbar<T>({
   clearFilters
 }: DataTableToolbarProps<T>) {
   const { onAddNew, filterOptions } = useDataTable<T>()
+  const isMobile = useMobile()
   
   const activeFiltersCount = Object.values(filters).flat().length
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-2">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-2">
         <Button size="sm" className="h-8" onClick={onAddNew}>
           <Plus className="h-4 w-4 mr-2" />
           Add New
         </Button>
         
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-8">
-              <Filter className="h-4 w-4 mr-2" />
-              Filter
-              {activeFiltersCount > 0 && (
-                <span className="ml-2 bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 text-xs">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
-            <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {filterOptions?.map((filter) => (
-              <div key={filter.key}>
-                <DropdownMenuLabel className="text-xs text-muted-foreground">
-                  {filter.label}
-                </DropdownMenuLabel>
-                {filter.options.map((option) => (
-                  <DropdownMenuCheckboxItem
-                    key={option.value}
-                    checked={filters[filter.key]?.includes(option.value) || false}
-                    onCheckedChange={(checked) => onFilterChange(filter.key, option.value, checked)}
-                  >
-                    {option.label}
-                  </DropdownMenuCheckboxItem>
-                ))}
-                <DropdownMenuSeparator />
-              </div>
-            ))}
-            {activeFiltersCount > 0 && (
-              <>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={clearFilters}>
-                  <X className="h-4 w-4 mr-2" />
-                  Clear all filters
-                </DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-8">
-              <ArrowUpDown className="h-4 w-4 mr-2" />
-              Sort
-              {sortConfig.key && (
-                <span className="ml-2">
-                  {sortConfig.direction === 'asc' ? (
-                    <ArrowUp className="h-3 w-3" />
-                  ) : (
-                    <ArrowDown className="h-3 w-3" />
-                  )}
-                </span>
-              )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-48">
-            <DropdownMenuLabel>Sort by</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {columns.filter(col => col.sortable).map((column) => (
-              <DropdownMenuItem
-                key={String(column.key)}
-                onClick={() => onSort(column.key)}
-                className="flex items-center justify-between"
-              >
-                {column.header}
-                {sortConfig.key === column.key && (
-                  sortConfig.direction === 'asc' ? (
-                    <ArrowUp className="h-4 w-4" />
-                  ) : (
-                    <ArrowDown className="h-4 w-4" />
-                  )
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8">
+                <Filter className="h-4 w-4 mr-2" />
+                Filter
+                {activeFiltersCount > 0 && (
+                  <span className="ml-2 bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 text-xs">
+                    {activeFiltersCount}
+                  </span>
                 )}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {filterOptions?.map((filter) => (
+                <div key={filter.key}>
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">
+                    {filter.label}
+                  </DropdownMenuLabel>
+                  {filter.options.map((option) => (
+                    <DropdownMenuCheckboxItem
+                      key={option.value}
+                      checked={filters[filter.key]?.includes(option.value) || false}
+                      onCheckedChange={(checked) => onFilterChange(filter.key, option.value, checked)}
+                    >
+                      {option.label}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                  <DropdownMenuSeparator />
+                </div>
+              ))}
+              {activeFiltersCount > 0 && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={clearFilters}>
+                    <X className="h-4 w-4 mr-2" />
+                    Clear all filters
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8">
+                <ArrowUpDown className="h-4 w-4 mr-2" />
+                Sort
+                {sortConfig.key && (
+                  <span className="ml-2">
+                    {sortConfig.direction === 'asc' ? (
+                      <ArrowUp className="h-3 w-3" />
+                    ) : (
+                      <ArrowDown className="h-3 w-3" />
+                    )}
+                  </span>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48">
+              <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {columns.filter(col => col.sortable).map((column) => (
+                <DropdownMenuItem
+                  key={String(column.key)}
+                  onClick={() => onSort(column.key)}
+                  className="flex items-center justify-between"
+                >
+                  {column.header}
+                  {sortConfig.key === column.key && (
+                    sortConfig.direction === 'asc' ? (
+                      <ArrowUp className="h-4 w-4" />
+                    ) : (
+                      <ArrowDown className="h-4 w-4" />
+                    )
+                  )}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-      <div className="flex items-center space-x-2">
-        <div className="relative">
+      
+      <div className="flex items-center space-x-2 w-full sm:w-auto">
+        <div className="relative flex-1 sm:flex-none">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-8 w-[200px]"
+            className={`pl-8 ${isMobile ? 'w-full' : 'w-[200px]'}`}
           />
         </div>
       </div>
@@ -418,6 +423,8 @@ function DataTableHeader<T>({
   onSelectAll, 
   isAllSelected 
 }: DataTableHeaderProps<T>) {
+  const isMobile = useMobile()
+
   return (
     <TableHeader>
       <TableRow>
@@ -430,12 +437,12 @@ function DataTableHeader<T>({
           />
         </TableHead>
         {columns.map((column, index) => (
-          <TableHead key={index}>
+          <TableHead key={index} className={isMobile ? "text-xs" : ""}>
             {column.sortable ? (
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 p-0 font-medium"
+                className={`h-8 p-0 font-medium ${isMobile ? 'text-xs' : ''}`}
                 onClick={() => onSort(column.key)}
               >
                 {column.header}
@@ -463,6 +470,7 @@ function DataTableHeader<T>({
 // Body Component
 function DataTableBody<T>() {
   const { data, columns, onRowClick, selectedRows, onSelectionChange, getRowId, actions } = useDataTable<T>()
+  const isMobile = useMobile()
 
   return (
     <TableBody>
@@ -494,7 +502,7 @@ function DataTableBody<T>() {
               />
             </TableCell>
             {columns.map((column, colIndex) => (
-              <TableCell key={colIndex}>
+              <TableCell key={colIndex} className={isMobile ? "text-sm" : ""}>
                 {column.cell ? column.cell(item) : String(item[column.key])}
               </TableCell>
             ))}
@@ -537,20 +545,22 @@ function DataTablePagination({
   totalItems,
   itemsPerPage,
 }: DataTablePaginationProps) {
+  const isMobile = useMobile()
   const startItem = (currentPage - 1) * itemsPerPage + 1
   const endItem = Math.min(currentPage * itemsPerPage, totalItems)
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
       <div className="text-sm text-muted-foreground">
         Showing {startItem} to {endItem} of {totalItems} entries
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-1 sm:space-x-2">
         <Button
           variant="outline"
           size="sm"
           onClick={() => onPageChange(1)}
           disabled={currentPage === 1}
+          className="h-8 w-8 p-0"
         >
           <ChevronsLeft className="h-4 w-4" />
         </Button>
@@ -559,20 +569,21 @@ function DataTablePagination({
           size="sm"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
+          className="h-8 w-8 p-0"
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
         
-        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+        {Array.from({ length: Math.min(isMobile ? 3 : 5, totalPages) }, (_, i) => {
           let pageNum
-          if (totalPages <= 5) {
+          if (totalPages <= (isMobile ? 3 : 5)) {
             pageNum = i + 1
-          } else if (currentPage <= 3) {
+          } else if (currentPage <= (isMobile ? 2 : 3)) {
             pageNum = i + 1
-          } else if (currentPage >= totalPages - 2) {
-            pageNum = totalPages - 4 + i
+          } else if (currentPage >= totalPages - (isMobile ? 1 : 2)) {
+            pageNum = totalPages - (isMobile ? 2 : 4) + i
           } else {
-            pageNum = currentPage - 2 + i
+            pageNum = currentPage - (isMobile ? 1 : 2) + i
           }
           
           return (
@@ -581,6 +592,7 @@ function DataTablePagination({
               variant={currentPage === pageNum ? "default" : "outline"}
               size="sm"
               onClick={() => onPageChange(pageNum)}
+              className="h-8 w-8 p-0"
             >
               {pageNum}
             </Button>
@@ -592,6 +604,7 @@ function DataTablePagination({
           size="sm"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
+          className="h-8 w-8 p-0"
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -600,6 +613,7 @@ function DataTablePagination({
           size="sm"
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage === totalPages}
+          className="h-8 w-8 p-0"
         >
           <ChevronsRight className="h-4 w-4" />
         </Button>

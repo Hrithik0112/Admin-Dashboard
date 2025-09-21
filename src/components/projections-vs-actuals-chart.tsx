@@ -1,4 +1,4 @@
-"use client"
+
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,7 +29,7 @@ export function ProjectionsVsActualsChart() {
   const isMobile = useMobile()
 
   return (
-    <Card>
+    <Card className="bg-brand-primary-gray dark:bg-background">
       <CardHeader className="pb-3 sm:pb-6">
         <CardTitle className="text-sm sm:text-base">Projections vs Actuals</CardTitle>
       </CardHeader>

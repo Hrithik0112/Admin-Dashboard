@@ -20,7 +20,7 @@ function Dashboard() {
       <div className="grid gap-4 sm:gap-7 grid-cols-1 lg:grid-cols-2">
         {/* Stats Cards */}
         <div className="grid gap-4 sm:gap-7 grid-cols-1 sm:grid-cols-2">
-          <Card>
+          <Card className="bg-brand-primary-blue  dark:text-black">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Customers</CardTitle>
             </CardHeader>
@@ -33,7 +33,7 @@ function Dashboard() {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="bg-brand-primary-gray dark:bg-background">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Orders</CardTitle>
             </CardHeader>
@@ -46,7 +46,7 @@ function Dashboard() {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="bg-brand-primary-gray dark:bg-background">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Revenue</CardTitle>
             </CardHeader>
@@ -59,7 +59,7 @@ function Dashboard() {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="bg-brand-primary-purple dark:bg-brand-primary-purple dark:text-black">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Growth</CardTitle>
             </CardHeader>
@@ -82,7 +82,7 @@ function Dashboard() {
       {/* Revenue and Revenue by Location charts */}
       <div className="grid gap-4 sm:gap-7 grid-cols-1 lg:grid-cols-7">
         {/* Revenue Chart */}
-        <div className="col-span-1 lg:col-span-5">
+        <div className="col-span-1 lg:col-span-5 ">
           <RevenueChart />
         </div>
         
@@ -95,7 +95,7 @@ function Dashboard() {
             <img 
               src="/World-Map.png" 
               alt="World Map" 
-              className="w-full h-32 sm:h-40 object-cover rounded-md mb-4" 
+              className="w-full h-28 object-cover rounded-md " 
             />
             
             {/* Location List */}
@@ -265,7 +265,7 @@ function Dashboard() {
         </Card>
         
         {/* Total Sales Chart */}
-        <div className="col-span-1 lg:col-span-2">
+        <div className="col-span-1 lg:col-span-2 ">
           <TotalSalesChart />
         </div>
       </div>

@@ -182,7 +182,7 @@ export function NavItem({
         className={cn(
           "w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors relative",
           isActive 
-            ? "bg-accent text-accent-foreground before:content-[''] before:absolute before:left-0 before:top-1/4 before:bottom-0 before:w-1 before:h-4 before:bg-black before:rounded-full" 
+            ? "bg-accent text-accent-foreground before:content-[''] before:absolute before:left-0 before:top-1/4 before:bottom-0 before:w-1 before:h-4 before:bg-primary before:rounded-full" 
             : "text-foreground hover:bg-accent/50"
         )}
       >

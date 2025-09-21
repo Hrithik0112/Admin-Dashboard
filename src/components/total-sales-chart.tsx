@@ -1,14 +1,37 @@
-"use client"
-
 import { Pie, PieChart } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 
+// Define colors that work well in both light and dark modes
 const chartData = [
-  { sales: "Direct", value: 300.56, fill: "#000000" },
-  { sales: "Affiliate", value: 135.18, fill: "#90EE90" },
-  { sales: "Sponsored", value: 154.02, fill: "#DDA0DD" },
-  { sales: "E-mail", value: 48.96, fill: "#87CEEB" },
+  { 
+    sales: "Direct", 
+    value: 300.56, 
+    fill: "hsl(var(--foreground))", // Use theme-aware foreground color
+    lightFill: "#000000",
+    darkFill: "#ffffff"
+  },
+  { 
+    sales: "Affiliate", 
+    value: 135.18, 
+    fill: "#22c55e", // Green that works in both modes
+    lightFill: "#22c55e",
+    darkFill: "#22c55e"
+  },
+  { 
+    sales: "Sponsored", 
+    value: 154.02, 
+    fill: "#a855f7", // Purple that works in both modes
+    lightFill: "#a855f7",
+    darkFill: "#a855f7"
+  },
+  { 
+    sales: "E-mail", 
+    value: 48.96, 
+    fill: "#3b82f6", // Blue that works in both modes
+    lightFill: "#3b82f6",
+    darkFill: "#3b82f6"
+  },
 ]
 
 const chartConfig = {
@@ -17,19 +40,19 @@ const chartConfig = {
   },
   direct: {
     label: "Direct",
-    color: "#000000", // Black
+    color: "hsl(var(--foreground))", // Theme-aware color
   },
   affiliate: {
     label: "Affiliate", 
-    color: "#90EE90", // Light green
+    color: "#22c55e", // Green
   },
   sponsored: {
     label: "Sponsored",
-    color: "#DDA0DD", // Light purple
+    color: "#a855f7", // Purple
   },
   email: {
     label: "E-mail",
-    color: "#87CEEB", // Light blue
+    color: "#3b82f6", // Blue
   },
 } satisfies ChartConfig
 
@@ -45,7 +68,7 @@ export function TotalSalesChart() {
           {/* Donut Chart */}
           <div className="relative flex-1 min-h-[200px] flex items-center justify-center">
             {/* Background circle */}
-            <div className="absolute w-[140px] h-[140px] bg-gray-100 rounded-full"></div>
+            <div className="absolute w-[140px] h-[140px] bg-muted rounded-full"></div>
             
             <ChartContainer
               config={chartConfig}
@@ -76,7 +99,11 @@ export function TotalSalesChart() {
                 <div className="flex items-center space-x-4">
                   <div 
                     className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: item.fill }}
+                    style={{ 
+                      backgroundColor: item.sales === "Direct" 
+                        ? "hsl(var(--foreground))" 
+                        : item.fill 
+                    }}
                   />
                   <span className="text-sm font-medium">{item.sales}</span>
                 </div>
