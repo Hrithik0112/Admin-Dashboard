@@ -67,10 +67,6 @@ body {
   font-size: 14px; /* Set base font size */
 }
 
-
-
-
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -120,6 +116,12 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Custom brand colors */
+  --color-brand-primary-blue: oklch(0.9598 0.0233 231.83);
+  --color-brand-primary-purple: oklch(0.9407 0.0155 257.2);
+  --color-brand-bar-chart: oklch(0.8088 0.0432 239.55);
+  --color-brand-primary-gray: oklch(0.9812 0.0034 247.86);
 }
 
 .dark {
@@ -154,6 +156,9 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Custom brand colors */
+  --color-brand-primary-gray-dark: oklch(0.205 0 0);
 }
 
 @layer base {

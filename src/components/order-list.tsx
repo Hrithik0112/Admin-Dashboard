@@ -11,9 +11,11 @@ import { DataTable, type Column, type FilterOption } from "@/components/ui/data-
 import { MoreHorizontal, Eye, Edit, Trash2, Calendar, MapPin } from "lucide-react"
 import { orders, type Order } from "@/lib/data"
 import { getStatusDot, getStatusColor } from "@/lib/utils"
+import { useMobile } from "@/hooks/use-mobile"
 
 export function OrderList() {
   const [selectedOrders, setSelectedOrders] = React.useState<Order[]>([])
+  const isMobile = useMobile()
 
   const columns: Column<Order>[] = [
     {
@@ -53,7 +55,7 @@ export function OrderList() {
       cell: (order) => (
         <div className="flex items-center space-x-2">
           <MapPin className="h-4 w-4 text-muted-foreground" />
-          <span>{order.address}</span>
+          <span className="truncate max-w-[200px]">{order.address}</span>
         </div>
       ),
       sortable: true
@@ -65,6 +67,49 @@ export function OrderList() {
         <div className="flex items-center space-x-2">
           <Calendar className="h-4 w-4 text-muted-foreground" />
           <span>{order.date}</span>
+        </div>
+      ),
+      sortable: true
+    },
+    {
+      key: "status",
+      header: "Status",
+      cell: (order) => (
+        <div className="flex items-center space-x-2">
+          <div className={`w-2 h-2 rounded-full ${getStatusDot(order.status)}`} />
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+            {order.status}
+          </span>
+        </div>
+      ),
+      sortable: true
+    }
+  ]
+
+  // Mobile-optimized columns (show only essential info)
+  const mobileColumns: Column<Order>[] = [
+    {
+      key: "id",
+      header: "Order",
+      cell: (order) => (
+        <div className="space-y-1">
+          <span className="font-medium text-primary">#{order.id}</span>
+          <div className="text-sm text-muted-foreground">{order.project}</div>
+        </div>
+      ),
+      sortable: true
+    },
+    {
+      key: "user",
+      header: "User",
+      cell: (order) => (
+        <div className="flex items-center space-x-2">
+          <img 
+            src={order.user.avatar} 
+            alt={order.user.name}
+            className="w-6 h-6 rounded-full object-cover"
+          />
+          <span className="font-medium text-sm">{order.user.name}</span>
         </div>
       ),
       sortable: true
@@ -119,16 +164,14 @@ export function OrderList() {
   }
 
   const handleAddNew = () => {
-    // Add new order logic here
     console.log("Add new order clicked")
-    // You can open a modal, navigate to a form, etc.
   }
 
   const handleFilterChange = (filters: Record<string, string[]>) => {
     console.log("Filters changed:", filters)
   }
 
-  const actions = () => ( // eslint-disable-line @typescript-eslint/no-unused-vars
+  const actions = () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -153,18 +196,18 @@ export function OrderList() {
   )
 
   return (
-    <div className="space-y-6">
+    <div className="">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-xl font-bold tracking-tight">Order List</h1>
+        <h1 className="text-lg sm:text-xl font-bold tracking-tight">Order List</h1>
       </div>
 
       {/* Data Table */}
       <div className="border-none">
-        <CardContent>
+        <CardContent className="p-0 sm:p-6">
           <DataTable
             data={orders}
-            columns={columns}
+            columns={isMobile ? mobileColumns : columns}
             searchKey="user"
             onRowClick={handleRowClick}
             selectedRows={selectedOrders}

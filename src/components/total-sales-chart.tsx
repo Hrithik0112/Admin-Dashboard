@@ -1,14 +1,14 @@
-"use client"
-
 import { Pie, PieChart } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { useTheme } from "@/hooks/use-Theme"
 
-const chartData = [
-  { sales: "Direct", value: 300.56, fill: "#000000" },
-  { sales: "Affiliate", value: 135.18, fill: "#90EE90" },
-  { sales: "Sponsored", value: 154.02, fill: "#DDA0DD" },
-  { sales: "E-mail", value: 48.96, fill: "#87CEEB" },
+// Base data without colors
+const baseChartData = [
+  { sales: "Direct", value: 300.56 },
+  { sales: "Affiliate", value: 135.18 },
+  { sales: "Sponsored", value: 154.02 },
+  { sales: "E-mail", value: 48.96 },
 ]
 
 const chartConfig = {
@@ -17,23 +17,38 @@ const chartConfig = {
   },
   direct: {
     label: "Direct",
-    color: "#000000", // Black
+    color: "hsl(var(--foreground))",
   },
   affiliate: {
     label: "Affiliate", 
-    color: "#90EE90", // Light green
+    color: "#22c55e",
   },
   sponsored: {
     label: "Sponsored",
-    color: "#DDA0DD", // Light purple
+    color: "#a855f7",
   },
   email: {
     label: "E-mail",
-    color: "#87CEEB", // Light blue
+    color: "#3b82f6",
   },
 } satisfies ChartConfig
 
 export function TotalSalesChart() {
+  const { theme } = useTheme()
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+  
+  // Generate chart data with theme-aware colors
+  const chartData = baseChartData.map(item => ({
+    ...item,
+    fill: item.sales === "Direct" 
+      ? (isDarkMode ? "#C6C7F8" : "#000000")
+      : item.sales === "Affiliate"
+      ? (isDarkMode ? "#BAEDBD" : "#BAEDBD")
+      : item.sales === "Sponsored"
+      ? (isDarkMode ? "#95A4FC" : "#95A4FC")
+      : (isDarkMode ? "#B1E3FF" : "#B1E3FF")
+  }))
+
   return (
     <Card className="col-span-2">
       <CardHeader className="flex flex-row items-center pb-2 gap-4">
@@ -45,7 +60,7 @@ export function TotalSalesChart() {
           {/* Donut Chart */}
           <div className="relative flex-1 min-h-[200px] flex items-center justify-center">
             {/* Background circle */}
-            <div className="absolute w-[140px] h-[140px] bg-gray-100 rounded-full"></div>
+            <div className="absolute w-[140px] h-[140px] bg-muted rounded-full"></div>
             
             <ChartContainer
               config={chartConfig}

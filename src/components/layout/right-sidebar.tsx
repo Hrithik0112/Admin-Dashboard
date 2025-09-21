@@ -113,7 +113,9 @@ export function NotificationItem({ icon: Icon, text, timestamp, isCollapsed }: N
 
   return (
     <div className="flex items-start space-x-3 p-3 hover:bg-accent/50 rounded-lg transition-colors">
-      <Icon className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+        <div className="flex items-center justify-center size-6 bg-[#E3F5FF] rounded-lg">
+      <Icon className="h-4 w-4 text-black mt-0.5 flex-shrink-0" />
+        </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm text-foreground">{text}</p>
         <p className="text-xs text-muted-foreground/60 mt-1">{timestamp}</p>
@@ -172,7 +174,7 @@ export function Activities({ isCollapsed }: { isCollapsed: boolean }) {
 export function ActivityItem({ avatar, text, timestamp, isCollapsed, isLast }: ActivityItemProps) {
   if (isCollapsed) {
     return (
-      <div className="flex justify-center p-2">
+      <div className="flex justify-center ">
         <img 
           src={avatar} 
           alt="Activity avatar" 
@@ -243,7 +245,7 @@ export function ContactItem({ avatar, name, isCollapsed }: ContactItemProps) {
   }
 
   return (
-    <div className="flex items-center space-x-3 p-3 hover:bg-accent/50 rounded-lg transition-colors">
+    <div className="flex items-center space-x-3 p-1 hover:bg-accent/50 rounded-lg transition-colors">
       <img 
         src={avatar} 
         alt={`${name} avatar`} 

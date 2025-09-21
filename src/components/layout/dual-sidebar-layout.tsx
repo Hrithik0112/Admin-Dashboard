@@ -2,6 +2,7 @@ import { useState } from "react"
 import { LeftSidebar, Favorites, Dashboards, Pages } from "./left-sidebar"
 import { RightSidebar, Notifications, Activities, Contacts } from "./right-sidebar"
 import { Header } from "./header"
+import { useMobile } from "@/hooks/use-mobile"
 
 interface DualSidebarLayoutProps {
   children: React.ReactNode
@@ -12,6 +13,20 @@ interface DualSidebarLayoutProps {
 export function DualSidebarLayout({ children, onNavigation, activeView }: DualSidebarLayoutProps) {
   const [leftCollapsed, setLeftCollapsed] = useState(false)
   const [rightCollapsed, setRightCollapsed] = useState(false)
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(false)
+  const isMobile = useMobile()
+
+  const handleLeftSidebarToggle = () => {
+    if (isMobile) {
+      setLeftSidebarOpen(!leftSidebarOpen)
+    } else {
+      setLeftCollapsed(!leftCollapsed)
+    }
+  }
+
+  const handleLeftSidebarClose = () => {
+    setLeftSidebarOpen(false)
+  }
 
   return (
     <div className="flex h-screen bg-background">
@@ -19,6 +34,8 @@ export function DualSidebarLayout({ children, onNavigation, activeView }: DualSi
       <LeftSidebar
         isCollapsed={leftCollapsed}
         onToggle={() => setLeftCollapsed(!leftCollapsed)}
+        isOpen={leftSidebarOpen}
+        onClose={handleLeftSidebarClose}
       >
         <Favorites isCollapsed={leftCollapsed} />
         <Dashboards 
@@ -32,7 +49,7 @@ export function DualSidebarLayout({ children, onNavigation, activeView }: DualSi
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col min-w-0">
         <Header 
-          onLeftSidebarToggle={() => setLeftCollapsed(!leftCollapsed)}
+          onLeftSidebarToggle={handleLeftSidebarToggle}
           onRightSidebarToggle={() => setRightCollapsed(!rightCollapsed)}
         />
         <main className="flex-1 overflow-auto p-6">

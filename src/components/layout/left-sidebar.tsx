@@ -1,13 +1,16 @@
 import { cn } from "@/lib/utils"
 import { leftNavigation } from "./data/navigation"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, ChevronRight, X } from "lucide-react"
 import { useState, type ReactNode } from "react"
 import { generateAvatarUrl } from "@/lib/utils"
+import { useMobile } from "@/hooks/use-mobile"
 
 interface LeftSidebarProps {
   isCollapsed: boolean
   onToggle?: () => void
   children: ReactNode
+  isOpen?: boolean
+  onClose?: () => void
 }
 
 interface SectionProps {
@@ -30,7 +33,58 @@ interface NavItemProps {
 }
 
 // Main LeftSidebar component
-export function LeftSidebar({ isCollapsed, children }: LeftSidebarProps) {
+export function LeftSidebar({ isCollapsed, children, isOpen, onClose }: LeftSidebarProps) {
+  const isMobile = useMobile()
+
+  // On mobile, show overlay when sidebar is open
+  if (isMobile) {
+    return (
+      <>
+        {/* Mobile Overlay */}
+        {isOpen && (
+          <div 
+            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+            onClick={onClose}
+          />
+        )}
+        
+        {/* Mobile Sidebar */}
+        <div
+          className={cn(
+            "fixed left-0 top-0 z-50 h-full w-64 transform border-r bg-background transition-transform duration-300 ease-in-out lg:hidden",
+            isOpen ? "translate-x-0" : "-translate-x-full"
+          )}
+        >
+          {/* Header */}
+          <div className="flex h-16 items-center justify-between border-b px-4">
+            <div className="flex items-center space-x-3">
+              <img 
+                src={generateAvatarUrl("byewind")} 
+                alt="ByeWind" 
+                className="w-8 h-8 rounded-full object-cover"
+              />
+              <h1 className="text-lg font-semibold text-foreground">
+                ByeWind
+              </h1>
+            </div>
+            <button
+              onClick={onClose}
+              className="rounded-md p-1 hover:bg-accent"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-4">
+            {children}
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  // Desktop sidebar (existing behavior)
   return (
     <div
       className={cn(
@@ -126,13 +180,20 @@ export function NavItem({
       <button
         onClick={handleClick}
         className={cn(
-          "w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors",
+          "w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors relative",
           isActive 
-            ? "bg-accent text-accent-foreground border-l-4 border-primary" 
+            ? "bg-accent text-accent-foreground before:content-[''] before:absolute before:left-0 before:top-1/4 before:bottom-0 before:w-1 before:h-4 before:bg-primary before:rounded-full" 
             : "text-foreground hover:bg-accent/50"
         )}
       >
         <div className="flex items-center space-x-3">
+        {hasSubmenu && (
+          expanded ? (
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          ) : (
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          )
+        )}
           {Icon ? (
             <Icon className="h-4 w-4" />
           ) : (
@@ -140,13 +201,7 @@ export function NavItem({
           )}
           <span>{title}</span>
         </div>
-        {hasSubmenu && (
-          expanded ? (
-            <ChevronDown className="h-4 w-4 text-muted-foreground" />
-          ) : (
-            <ChevronDown className="h-4 w-4 text-muted-foreground" />
-          )
-        )}
+        
       </button>
       
       {hasSubmenu && expanded && children && (
