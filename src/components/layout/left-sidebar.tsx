@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import { leftNavigation } from "./data/navigation"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, ChevronRight } from "lucide-react"
 import { useState, type ReactNode } from "react"
 import { generateAvatarUrl } from "@/lib/utils"
 
@@ -126,13 +126,20 @@ export function NavItem({
       <button
         onClick={handleClick}
         className={cn(
-          "w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors",
+          "w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors relative",
           isActive 
-            ? "bg-accent text-accent-foreground border-l-4 border-primary" 
+            ? "bg-accent text-accent-foreground before:content-[''] before:absolute before:left-0 before:top-1/4 before:bottom-0 before:w-1 before:h-4 before:bg-black before:rounded-full" 
             : "text-foreground hover:bg-accent/50"
         )}
       >
         <div className="flex items-center space-x-3">
+        {hasSubmenu && (
+          expanded ? (
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          ) : (
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          )
+        )}
           {Icon ? (
             <Icon className="h-4 w-4" />
           ) : (
@@ -140,13 +147,7 @@ export function NavItem({
           )}
           <span>{title}</span>
         </div>
-        {hasSubmenu && (
-          expanded ? (
-            <ChevronDown className="h-4 w-4 text-muted-foreground" />
-          ) : (
-            <ChevronDown className="h-4 w-4 text-muted-foreground" />
-          )
-        )}
+        
       </button>
       
       {hasSubmenu && expanded && children && (

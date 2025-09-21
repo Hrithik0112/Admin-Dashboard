@@ -128,7 +128,7 @@ export function OrderList() {
     console.log("Filters changed:", filters)
   }
 
-  const actions = () => ( // eslint-disable-line @typescript-eslint/no-unused-vars
+  const actions = () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="h-8 w-8">
