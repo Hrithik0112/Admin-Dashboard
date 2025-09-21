@@ -1,37 +1,14 @@
 import { Pie, PieChart } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { useTheme } from "@/hooks/use-Theme"
 
-// Define colors that work well in both light and dark modes
-const chartData = [
-  { 
-    sales: "Direct", 
-    value: 300.56, 
-    fill: "hsl(var(--foreground))", // Use theme-aware foreground color
-    lightFill: "#000000",
-    darkFill: "#ffffff"
-  },
-  { 
-    sales: "Affiliate", 
-    value: 135.18, 
-    fill: "#22c55e", // Green that works in both modes
-    lightFill: "#22c55e",
-    darkFill: "#22c55e"
-  },
-  { 
-    sales: "Sponsored", 
-    value: 154.02, 
-    fill: "#a855f7", // Purple that works in both modes
-    lightFill: "#a855f7",
-    darkFill: "#a855f7"
-  },
-  { 
-    sales: "E-mail", 
-    value: 48.96, 
-    fill: "#3b82f6", // Blue that works in both modes
-    lightFill: "#3b82f6",
-    darkFill: "#3b82f6"
-  },
+// Base data without colors
+const baseChartData = [
+  { sales: "Direct", value: 300.56 },
+  { sales: "Affiliate", value: 135.18 },
+  { sales: "Sponsored", value: 154.02 },
+  { sales: "E-mail", value: 48.96 },
 ]
 
 const chartConfig = {
@@ -40,23 +17,38 @@ const chartConfig = {
   },
   direct: {
     label: "Direct",
-    color: "hsl(var(--foreground))", // Theme-aware color
+    color: "hsl(var(--foreground))",
   },
   affiliate: {
     label: "Affiliate", 
-    color: "#22c55e", // Green
+    color: "#22c55e",
   },
   sponsored: {
     label: "Sponsored",
-    color: "#a855f7", // Purple
+    color: "#a855f7",
   },
   email: {
     label: "E-mail",
-    color: "#3b82f6", // Blue
+    color: "#3b82f6",
   },
 } satisfies ChartConfig
 
 export function TotalSalesChart() {
+  const { theme } = useTheme()
+  const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+  
+  // Generate chart data with theme-aware colors
+  const chartData = baseChartData.map(item => ({
+    ...item,
+    fill: item.sales === "Direct" 
+      ? (isDarkMode ? "#C6C7F8" : "#000000")
+      : item.sales === "Affiliate"
+      ? (isDarkMode ? "#BAEDBD" : "#BAEDBD")
+      : item.sales === "Sponsored"
+      ? (isDarkMode ? "#95A4FC" : "#95A4FC")
+      : (isDarkMode ? "#B1E3FF" : "#B1E3FF")
+  }))
+
   return (
     <Card className="col-span-2">
       <CardHeader className="flex flex-row items-center pb-2 gap-4">
@@ -99,11 +91,7 @@ export function TotalSalesChart() {
                 <div className="flex items-center space-x-4">
                   <div 
                     className="w-2 h-2 rounded-full"
-                    style={{ 
-                      backgroundColor: item.sales === "Direct" 
-                        ? "hsl(var(--foreground))" 
-                        : item.fill 
-                    }}
+                    style={{ backgroundColor: item.fill }}
                   />
                   <span className="text-sm font-medium">{item.sales}</span>
                 </div>

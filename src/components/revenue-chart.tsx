@@ -1,5 +1,3 @@
-"use client"
-
 import { CartesianGrid, Line, XAxis, YAxis, Area, ComposedChart } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
@@ -28,15 +26,17 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function RevenueChart() {
-    const isDarkMode = useTheme()
+    const { theme } = useTheme()
+    const isDarkMode = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    
     return (
         <Card>
             <CardHeader className="flex flex-row items-center pb-2 gap-4">
                 <CardTitle className="text-sm font-semibold">Revenue</CardTitle>
-                <div className="h-4 w-[2px] bg-gray-200"></div>
+                <div className="h-4 w-[2px] bg-border"></div>
                 <div className="flex items-center space-x-4 text-sm">
                     <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 bg-black rounded-full"></div>
+                        <div className={`w-3 h-3 rounded-full ${isDarkMode ? 'bg-white' : 'bg-black'}`}></div>
                         <span>Current Week $58,211</span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -49,9 +49,8 @@ export function RevenueChart() {
                 <ChartContainer config={chartConfig}>
                     <ComposedChart
                         data={chartData}
-
                     >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                         <XAxis
                             dataKey="month"
                             tickLine={false}
@@ -79,7 +78,7 @@ export function RevenueChart() {
                             strokeWidth={2}
                         />
 
-                        {/* Current Week Line (black, solid then dashed) */}
+                        {/* Current Week Line (theme-aware, solid then dashed) */}
                         <Line dataKey="currentWeekSolid" 
                         type="monotone" 
                         stroke={isDarkMode ? "white" : "black"} 
