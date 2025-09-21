@@ -1,4 +1,4 @@
-import { ThemeProviderContext } from "@/hooks/use-theme"
+import { ThemeProviderContext } from "@/hooks/use-Theme"
 import { useEffect, useState } from "react"
 
 type Theme = "dark" | "light" | "system"
@@ -8,7 +8,6 @@ type ThemeProviderProps = {
   defaultTheme?: Theme
   storageKey?: string
 }
-
 
 export function ThemeProvider({
   children,

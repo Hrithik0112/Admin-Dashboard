@@ -43,7 +43,7 @@ export function RightSidebar({ isCollapsed, onToggle, children }: RightSidebarPr
   return (
     <div
       className={cn(
-        "flex h-full flex-col border-l bg-white transition-all duration-300",
+        "flex h-full flex-col border-l bg-background transition-all duration-300",
         isCollapsed ? "w-16" : "w-80"
       )}
     >
@@ -62,7 +62,7 @@ export function RightSidebar({ isCollapsed, onToggle, children }: RightSidebarPr
           )}
         </Button>
         {!isCollapsed && (
-          <h1 className="text-lg font-semibold text-gray-900">
+          <h1 className="text-lg font-semibold text-foreground">
             Quick Panel
           </h1>
         )}
@@ -81,7 +81,7 @@ export function Section({ title, children, isCollapsed }: SectionProps) {
   return (
     <div className="mb-6">
       {!isCollapsed && (
-        <h3 className="text-sm font-medium text-gray-900 mb-3">
+        <h3 className="text-sm font-medium text-foreground mb-3">
           {title}
         </h3>
       )}
@@ -127,11 +127,11 @@ export function NotificationItem({ icon: Icon, text, timestamp, isCollapsed }: N
   }
 
   return (
-    <div className="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+    <div className="flex items-start space-x-3 p-3 hover:bg-accent/50 rounded-lg transition-colors">
       <Icon className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
       <div className="flex-1 min-w-0">
-        <p className="text-sm text-gray-900">{text}</p>
-        <p className="text-xs text-gray-500 mt-1">{timestamp}</p>
+        <p className="text-sm text-foreground">{text}</p>
+        <p className="text-xs text-muted-foreground/60 mt-1">{timestamp}</p>
       </div>
     </div>
   )
@@ -198,10 +198,10 @@ export function ActivityItem({ avatar, text, timestamp, isCollapsed, isLast }: A
   }
 
   return (
-    <div className="relative flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+    <div className="relative flex items-start space-x-3 p-3 hover:bg-accent/50 rounded-lg transition-colors">
       {/* Timeline line */}
       {!isLast && (
-        <div className="absolute left-6 top-12 w-px h-8 bg-gray-200"></div>
+        <div className="absolute left-6 top-12 w-px h-8 bg-muted-foreground/20"></div>
       )}
       
       <img 
@@ -211,8 +211,8 @@ export function ActivityItem({ avatar, text, timestamp, isCollapsed, isLast }: A
       />
       
       <div className="flex-1 min-w-0">
-        <p className="text-sm text-gray-900">{text}</p>
-        <p className="text-xs text-gray-500 mt-1">{timestamp}</p>
+        <p className="text-sm text-foreground">{text}</p>
+        <p className="text-xs text-muted-foreground/60 mt-1">{timestamp}</p>
       </div>
     </div>
   )
@@ -258,14 +258,14 @@ export function ContactItem({ avatar, name, isCollapsed }: ContactItemProps) {
   }
 
   return (
-    <div className="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+    <div className="flex items-center space-x-3 p-3 hover:bg-accent/50 rounded-lg transition-colors">
       <img 
         src={avatar} 
         alt={`${name} avatar`} 
         className="w-8 h-8 rounded-full object-cover flex-shrink-0"
       />
       <div className="flex-1 min-w-0">
-        <p className="text-sm text-gray-900">{name}</p>
+        <p className="text-sm text-foreground">{name}</p>
       </div>
     </div>
   )

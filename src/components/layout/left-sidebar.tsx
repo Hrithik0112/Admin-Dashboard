@@ -35,7 +35,7 @@ export function LeftSidebar({ isCollapsed, onToggle, children }: LeftSidebarProp
   return (
     <div
       className={cn(
-        "flex h-full flex-col border-r bg-white transition-all duration-300",
+        "flex h-full flex-col border-r bg-background transition-all duration-300",
         isCollapsed ? "w-16" : "w-64"
       )}
     >
@@ -48,7 +48,7 @@ export function LeftSidebar({ isCollapsed, onToggle, children }: LeftSidebarProp
               alt="ByeWind" 
               className="w-8 h-8 rounded-full object-cover"
             />
-            <h1 className="text-lg font-semibold text-gray-900">
+            <h1 className="text-lg font-semibold text-foreground">
               ByeWind
             </h1>
           </div>
@@ -81,11 +81,11 @@ export function Section({ title, children, isCollapsed, showTab, tabText }: Sect
     <div className="mb-6">
       {!isCollapsed && (
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
             {title}
           </h3>
           {showTab && tabText && (
-            <span className="text-xs text-gray-400">{tabText}</span>
+            <span className="text-xs text-muted-foreground/60">{tabText}</span>
           )}
         </div>
       )}
@@ -120,9 +120,9 @@ export function NavItem({
     return (
       <div className="flex justify-center p-2">
         {Icon ? (
-          <Icon className="h-4 w-4 text-gray-600" />
+          <Icon className="h-4 w-4 text-muted-foreground" />
         ) : (
-          <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+          <div className="w-2 h-2 rounded-full bg-muted-foreground/40"></div>
         )}
       </div>
     )
@@ -135,23 +135,23 @@ export function NavItem({
         className={cn(
           "w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-colors",
           isActive 
-            ? "bg-gray-100 text-gray-900 border-l-4 border-gray-900" 
-            : "text-gray-700 hover:bg-gray-50"
+            ? "bg-accent text-accent-foreground border-l-4 border-primary" 
+            : "text-foreground hover:bg-accent/50"
         )}
       >
         <div className="flex items-center space-x-3">
           {Icon ? (
             <Icon className="h-4 w-4" />
           ) : (
-            <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+            <div className="w-2 h-2 rounded-full bg-muted-foreground/40"></div>
           )}
           <span>{title}</span>
         </div>
         {hasSubmenu && (
           expanded ? (
-            <ChevronDown className="h-4 w-4 text-gray-400" />
+            <ChevronDown className="h-4 w-4 text-muted-foreground" />
           ) : (
-            <ChevronRight className="h-4 w-4 text-gray-400" />
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
           )
         )}
       </button>
@@ -161,7 +161,7 @@ export function NavItem({
           {children.map((child, index) => (
             <button
               key={index}
-              className="w-full text-left px-3 py-1 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded transition-colors"
+              className="w-full text-left px-3 py-1 text-sm text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded transition-colors"
             >
               {child.title}
             </button>
