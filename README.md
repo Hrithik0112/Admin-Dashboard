@@ -10,7 +10,7 @@
 
 *A modern, responsive admin dashboard built with React, TypeScript, and TailwindCSS*
 
-[ Live Demo](#) • [📖 Documentation](#) • [🐛 Report Bug](#) • [✨ Request Feature](#)
+[ Live Demo](https://admin-dashboard-zeta-woad-70.vercel.app/) • [📖 Documentation](#) • [🐛 Report Bug](#) • [✨ Request Feature](#)
 
 </div>
 

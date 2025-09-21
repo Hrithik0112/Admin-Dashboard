@@ -12,7 +12,7 @@ interface DualSidebarLayoutProps {
 
 export function DualSidebarLayout({ children, onNavigation, activeView }: DualSidebarLayoutProps) {
   const [leftCollapsed, setLeftCollapsed] = useState(false)
-  const [rightCollapsed, setRightCollapsed] = useState(false)
+  const [rightCollapsed, setRightCollapsed] = useState(true)
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(false)
   const isMobile = useMobile()
 
