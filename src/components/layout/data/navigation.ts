@@ -1,164 +1,106 @@
 import { 
-  Home, 
-  Users, 
-  ShoppingCart, 
-  Package, 
-  BarChart3, 
-  Settings, 
+  PieChart,
+  ShoppingBag,
+  Folder,
+  BookOpen,
   User,
-  Plus,
+  Users,
   FileText,
-  Calendar,
-  CreditCard,
-  TrendingUp,
-  Activity,
+  MessageCircle,
   type LucideIcon,
 } from "lucide-react"
 
-// Define types for different item structures
-type BaseItem = {
+// Define types for navigation items
+type BaseNavItem = {
   title: string
-  icon: LucideIcon
+  icon?: LucideIcon
+  isActive?: boolean
+  hasSubmenu?: boolean
+  isExpanded?: boolean
+  children?: BaseNavItem[]
 }
 
-type ActionItem = BaseItem & {
-  action: string
-}
-
-type ActivityItem = BaseItem & {
-  subtitle: string
-}
-
-type StatsItem = BaseItem & {
-  value: string
-  subtitle: string
-  trend: string
-}
-
-type NavigationItem = ActionItem | ActivityItem | StatsItem
-
-type NavigationSection = {
+type NavSection = {
   title: string
-  items: NavigationItem[]
+  items: BaseNavItem[]
 }
 
-export const leftNavigation = [
+export const leftNavigation: NavSection[] = [
   {
-    title: "Main",
+    title: "Favorites",
     items: [
-      {
-        title: "Dashboard",
-        url: "/",
-        icon: Home,
-        isActive: true,
-      },
-      {
-        title: "Analytics",
-        url: "/analytics",
-        icon: BarChart3,
-      },
-      {
-        title: "Reports",
-        url: "/reports",
-        icon: FileText,
-      },
-    ],
+      { title: "Overview", isActive: false },
+      { title: "Projects", isActive: false },
+    ]
   },
   {
-    title: "Management",
+    title: "Dashboards",
     items: [
-      {
-        title: "Users",
-        url: "/users",
-        icon: Users,
+      { 
+        title: "Default", 
+        icon: PieChart, 
+        isActive: true 
       },
-      {
-        title: "Orders",
-        url: "/orders",
-        icon: ShoppingCart,
+      { 
+        title: "eCommerce", 
+        icon: ShoppingBag, 
+        hasSubmenu: true,
+        isExpanded: false
       },
-      {
-        title: "Products",
-        url: "/products",
-        icon: Package,
+      { 
+        title: "Projects", 
+        icon: Folder, 
+        hasSubmenu: true,
+        isExpanded: false
       },
-    ],
+      { 
+        title: "Online Courses", 
+        icon: BookOpen, 
+        hasSubmenu: true,
+        isExpanded: false
+      },
+    ]
   },
   {
-    title: "Tools",
+    title: "Pages",
     items: [
-      {
-        title: "Calendar",
-        url: "/calendar",
-        icon: Calendar,
+      { 
+        title: "User Profile", 
+        icon: User, 
+        hasSubmenu: true,
+        isExpanded: true,
+        children: [
+          { title: "Overview" },
+          { title: "Projects" },
+          { title: "Campaigns" },
+          { title: "Documents" },
+          { title: "Followers" },
+        ]
       },
-      {
-        title: "Settings",
-        url: "/settings",
-        icon: Settings,
+      { 
+        title: "Account", 
+        icon: Users, 
+        hasSubmenu: true,
+        isExpanded: false
       },
-    ],
-  },
-]
-
-export const rightNavigation: NavigationSection[] = [
-  {
-    title: "Quick Actions",
-    items: [
-      {
-        title: "New Order",
-        icon: Plus,
-        action: "create-order",
+      { 
+        title: "Corporate", 
+        icon: Users, 
+        hasSubmenu: true,
+        isExpanded: false
       },
-      {
-        title: "Add Product",
-        icon: Package,
-        action: "create-product",
+      { 
+        title: "Blog", 
+        icon: FileText, 
+        hasSubmenu: true,
+        isExpanded: false
       },
-      {
-        title: "New User",
-        icon: User,
-        action: "create-user",
+      { 
+        title: "Social", 
+        icon: MessageCircle, 
+        hasSubmenu: true,
+        isExpanded: false
       },
-    ],
-  },
-  {
-    title: "Recent Activity",
-    items: [
-      {
-        title: "Order #1234",
-        subtitle: "2 minutes ago",
-        icon: ShoppingCart,
-      },
-      {
-        title: "New User Signup",
-        subtitle: "5 minutes ago",
-        icon: User,
-      },
-      {
-        title: "Payment Received",
-        subtitle: "10 minutes ago",
-        icon: CreditCard,
-      },
-    ],
-  },
-  {
-    title: "Stats",
-    items: [
-      {
-        title: "Revenue",
-        value: "$12,345",
-        subtitle: "Last 30 days",
-        icon: TrendingUp,
-        trend: "+12%",
-      },
-      {
-        title: "Orders",
-        value: "1,234",
-        subtitle: "Last 30 days",
-        icon: Activity,
-        trend: "+8%",
-      },
-    ],
+    ]
   },
 ]

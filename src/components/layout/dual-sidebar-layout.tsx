@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { LeftSidebar } from "./left-sidebar"
-import { RightSidebar } from "./right-sidebar"
+import { LeftSidebar, Favorites, Dashboards, Pages } from "./left-sidebar"
+import { RightSidebar, Notifications, Activities, Contacts } from "./right-sidebar"
 import { Header } from "./header"
 
 interface DualSidebarLayoutProps {
@@ -17,7 +17,11 @@ export function DualSidebarLayout({ children }: DualSidebarLayoutProps) {
       <LeftSidebar
         isCollapsed={leftCollapsed}
         onToggle={() => setLeftCollapsed(!leftCollapsed)}
-      />
+      >
+        <Favorites isCollapsed={leftCollapsed} />
+        <Dashboards isCollapsed={leftCollapsed} />
+        <Pages isCollapsed={leftCollapsed} />
+      </LeftSidebar>
 
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col min-w-0">
@@ -33,7 +37,11 @@ export function DualSidebarLayout({ children }: DualSidebarLayoutProps) {
       <RightSidebar
         isCollapsed={rightCollapsed}
         onToggle={() => setRightCollapsed(!rightCollapsed)}
-      />
+      >
+        <Notifications isCollapsed={rightCollapsed} />
+        <Activities isCollapsed={rightCollapsed} />
+        <Contacts isCollapsed={rightCollapsed} />
+      </RightSidebar>
     </div>
   )
 }
