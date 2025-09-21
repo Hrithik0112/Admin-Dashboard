@@ -5,9 +5,10 @@ import { Header } from "./header"
 
 interface DualSidebarLayoutProps {
   children: React.ReactNode
+  onNavigation?: (view: 'dashboard' | 'orderlist') => void
 }
 
-export function DualSidebarLayout({ children }: DualSidebarLayoutProps) {
+export function DualSidebarLayout({ children, onNavigation }: DualSidebarLayoutProps) {
   const [leftCollapsed, setLeftCollapsed] = useState(false)
   const [rightCollapsed, setRightCollapsed] = useState(false)
 
@@ -19,7 +20,7 @@ export function DualSidebarLayout({ children }: DualSidebarLayoutProps) {
         onToggle={() => setLeftCollapsed(!leftCollapsed)}
       >
         <Favorites isCollapsed={leftCollapsed} />
-        <Dashboards isCollapsed={leftCollapsed} />
+        <Dashboards isCollapsed={leftCollapsed} onNavigation={onNavigation} />
         <Pages isCollapsed={leftCollapsed} />
       </LeftSidebar>
 
