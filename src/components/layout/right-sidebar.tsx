@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight, Bug, User, Wifi, type LucideIcon } from "lucide-react"
 import { type ReactNode } from "react"
+import { generateAvatarUrl } from "@/lib/utils"
 
 interface RightSidebarProps {
   isCollapsed: boolean
@@ -36,10 +37,6 @@ interface ContactItemProps {
   isCollapsed: boolean
 }
 
-// Helper function to generate random avatar URLs
-const generateAvatarUrl = (seed: string, size: number = 40) => {
-  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&size=${size}`
-}
 
 // Main RightSidebar component
 export function RightSidebar({ isCollapsed, onToggle, children }: RightSidebarProps) {
